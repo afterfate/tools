@@ -1,0 +1,28 @@
+#!/bin/sh
+
+rel=$1
+
+if [ ! -f '.setrel_inventory' ]; then
+	echo "No inventory found to fix versions on, exiting."
+	exit 1
+fi
+
+if [ -n "`git status --porcelain`" ]; then
+	echo "Working directory not ready, you shouldn't screw with versions"
+	git status --porcelain
+	echo "Do it anyway?"
+	read ans
+	if [ "${ans}" != "y" ]; then
+		exit 1
+	fi
+fi
+
+
+for file in `cat .setrel_inventory`; do
+	# Set up right permissions
+	cp -p ${file} ${file}.ver
+	# fix the release tag
+	cat $file | sed -e "s+\$Release: .*\\\$+\$Release: ${rel}\$+" > ${file}.ver
+	# move changes in to place
+	mv ${file}.ver ${file}
+done
