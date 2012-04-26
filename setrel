@@ -1,10 +1,17 @@
-#!/bin/sh
+#!/bin/sh 
 
 rel=$1
+shift
+files=$*
 
-if [ ! -f '.setrel_inventory' ]; then
-	echo "No inventory found to fix versions on, exiting."
-	exit 1
+if [ "${files}" != "" ]; then
+	echo "Using supplied file list ${files}"
+else
+	if [ ! -f '.setrel_inventory' ]; then
+		echo "No inventory found to fix versions on, exiting."
+		exit 1
+	fi
+	files=`cat .setrel_inventory`
 fi
 
 if [ -n "`git status --porcelain`" ]; then
@@ -18,7 +25,8 @@ if [ -n "`git status --porcelain`" ]; then
 fi
 
 
-for file in `cat .setrel_inventory`; do
+for file in ${files}; do
+	echo "Version switch on ${file}"
 	# Set up right permissions
 	cp -p ${file} ${file}.ver
 	# fix the release tag
