@@ -30,7 +30,7 @@ for file in ${files}; do
 	# Set up right permissions
 	cp -p ${file} ${file}.ver
 	# fix the release tag
-	cat $file | perl -pe "s/\$Release: .*?\\$/\$Release: ${rel}\\$/" >${file}.ver
+	cat $file | perl -pe "s/\\\$Release: .*?\\$/\\\$Release: ${rel}\\$/" >${file}.ver
 	# move changes in to place
 	mv ${file}.ver ${file}
 done
