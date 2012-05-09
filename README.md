@@ -2,4 +2,5 @@
 
 * setrel -- A simple shell script for setting release tags inside of a project for the purposes of packaging to the customer/public/etc.
 	* Assumes that scripts in question have ```$Release: $``` tags in them.
-	* Usage: setrel <release tag to use>
+	* Usage: setrel <release tag to use> [files to change]
+		* Uses '.setrel_inventory' file as default list of files to change.
